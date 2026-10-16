@@ -1,0 +1,5 @@
+# Teacher API Endpoint Registry
+
+`/api/v1` contract families: `/me`; `/teacher/dashboard`; `/teacher/timetable`; `/teacher/classes`; `/teacher/classes/{classId}`; `/teacher/classes/{classId}/students`; `/teacher/students/{studentId}`; `/teacher/attendance`; `/teacher/attendance/sessions`; `/teacher/attendance/sessions/{sessionId}`; `/teacher/lesson-plans`; `/teacher/schemes-of-work`; `/teacher/resources`; `/teacher/assignments`; `/teacher/assignments/{assignmentId}`; `/teacher/assignments/{assignmentId}/submissions`; `/teacher/submissions/{submissionId}/marks`; `/teacher/assessments`; `/teacher/assessments/{assessmentId}/marks`; `/teacher/report-cards`; `/teacher/analytics`; `/teacher/follow-ups`; `/teacher/calendar`; `/teacher/announcements`; `/teacher/messages`; `/teacher/notifications`; `/teacher/leave`; `/teacher/profile`; `/teacher/preferences`.
+
+Every write must return the updated resource or a typed validation/error envelope. Frontend integration is not claimed until a Laravel route registry and authenticated responses are available.
