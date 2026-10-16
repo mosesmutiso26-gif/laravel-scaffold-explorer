@@ -55,7 +55,7 @@ function HrPage() {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-bold text-navy">HR & Payroll</h1>
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+      <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
         <section className="rounded-2xl bg-muted p-4 shadow-card">
           <h2 className="mb-3 font-display text-3xl font-bold text-navy/80">HR</h2>
           <QueryState isLoading={leave.isLoading} error={leave.error} empty={leave.data?.length === 0}>
@@ -128,10 +128,10 @@ function HrPage() {
                           <tbody>
                             {slip.data.payments.map((p, i) => (
                               <tr key={p.id} className={i > 0 ? "[&>td]:bg-success-soft [&>td:first-child]:rounded-l-full [&>td:last-child]:rounded-r-full" : ""}>
-                                <td className="px-2 py-1">{p.label}</td><td className="px-2 text-right">{p.qty}</td><td className="px-2 text-right">{money(p.amount)}</td><td className="px-2 text-right">{money(p.qty * p.amount)}</td>
+                                <td className="whitespace-nowrap px-2 py-1">{p.label}</td><td className="px-2 text-right">{p.qty}</td><td className="px-2 text-right">{money(p.amount)}</td><td className="px-2 text-right">{money(p.qty * p.amount)}</td>
                               </tr>
                             ))}
-                            <tr className="font-semibold"><td className="px-2 py-1">Total Gross Pay</td><td /><td /><td className="px-2 text-right">{money(gross)}</td></tr>
+                            <tr className="font-semibold"><td className="whitespace-nowrap px-2 py-1">Total Gross Pay</td><td /><td /><td className="px-2 text-right">{money(gross)}</td></tr>
                           </tbody>
                         </table>
                         <div className="mt-3 flex justify-end"><LineDialog kind="payments" disabled={locked} onSave={(v) => addLine.mutate({ kind: "payments", ...v })} /></div>

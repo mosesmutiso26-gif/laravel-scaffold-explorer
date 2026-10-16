@@ -27,6 +27,7 @@ const TONES: Record<string, string> = {
 };
 export function statusTone(v: string) {
   const s = v.toLowerCase();
+  if (/partially/.test(s)) return "warn";
   if (/(approved|active|paid|verified|published|completed|working|good|returned|closed|delivered|applied)/.test(s)) return "good";
   if (/(pending|draft|open|review|partially|marking|observed|new|contacted|booked|prepared)/.test(s)) return "warn";
   if (/(rejected|suspended|faulty|high|repair|sent home|referred|maintenance)/.test(s)) return "bad";
