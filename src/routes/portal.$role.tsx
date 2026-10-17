@@ -9,7 +9,14 @@ import { ApiError } from "@/lib/api/errors";
 
 type Dash = { kpis: { label: string; value: string; source: string }[]; charts: { title: string; type: "bar" | "line"; source: string; series: { name: string; value: number }[] }[] };
 
-export const Route = createFileRoute("/portal/$role")({ component: RoleDashboard });
+export const Route = createFileRoute("/portal/$role")({
+  head: ({ params }) => {
+    const title = `${roleByKey(params.role)?.label ?? "Portal"} dashboard — Riverside Academy`;
+    const description = "Current term overview for this Riverside Academy role.";
+    return { meta: [{ title }, { name: "description", content: description }, { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] };
+  },
+  component: RoleDashboard,
+});
 
 function RoleDashboard() {
   const { role } = Route.useParams();

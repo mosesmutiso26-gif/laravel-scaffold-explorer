@@ -17,12 +17,17 @@ type Leave = { id: number; staff: string; type: string; start: string; end: stri
 type Run = { id: number; period: string; status: "draft" | "prepared" | "approved" | "paid"; employees: { id: number; name: string; position: string; gross: number; deductions: number }[] };
 type Slip = { id: number; name: string; position: string; payments: { id: number; label: string; qty: number; amount: number }[]; deductions: { id: number; label: string; amount: number }[] };
 
-export const Route = createFileRoute("/portal/hr")({ component: HrPage });
+export const Route = createFileRoute("/portal/hr")({
+  validateSearch: (search: Record<string, unknown>): { view?: "leave" | "payroll" } => ({ view: search.view === "leave" || search.view === "payroll" ? search.view : undefined }),
+  head: () => ({ meta: [{ title: "HR & Payroll — Riverside Academy" }, { name: "description", content: "Riverside Academy staff leave and payroll workspace." }, { property: "og:title", content: "HR & Payroll — Riverside Academy" }, { property: "og:description", content: "Staff leave and payroll workspace." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: HrPage,
+});
 
 const money = (n: number) => n.toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const leaveIcon = (t: string) => (/sick/i.test(t) ? Bandage : /overtime/i.test(t) ? History : Banknote);
 
 function HrPage() {
+  const { view } = Route.useSearch();
   const s = getSession();
   const canPayroll = s?.role === "hr" || s?.role === "admin";
   const canView = canPayroll || s?.role === "directors";
@@ -56,7 +61,7 @@ function HrPage() {
     <div className="space-y-5">
       <h1 className="text-2xl font-bold text-navy">HR & Payroll</h1>
       <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-        <section className="rounded-2xl bg-muted p-4 shadow-card">
+        {view !== "payroll" && <section className="rounded-2xl bg-muted p-4 shadow-card">
           <h2 className="mb-3 font-display text-3xl font-bold text-navy/80">HR</h2>
           <QueryState isLoading={leave.isLoading} error={leave.error} empty={leave.data?.length === 0}>
             <div className="divide-y rounded-lg border bg-card">
@@ -94,9 +99,9 @@ function HrPage() {
               })}
             </div>
           </QueryState>
-        </section>
+        </section>}
 
-        <section className="rounded-2xl bg-muted p-4 shadow-card">
+        {view !== "leave" && <section className="rounded-2xl bg-muted p-4 shadow-card">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-display text-3xl font-bold text-navy/80">Payroll</h2>
             {run.data && (
@@ -151,7 +156,7 @@ function HrPage() {
               </div>
             </QueryState>
           )}
-        </section>
+        </section>}
       </div>
     </div>
   );

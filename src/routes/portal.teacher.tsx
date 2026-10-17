@@ -18,7 +18,10 @@ type Overview = {
   announcements: { id: number; title: string; date: string; excerpt: string }[];
 };
 
-export const Route = createFileRoute("/portal/teacher")({ component: TeacherDashboard });
+export const Route = createFileRoute("/portal/teacher")({
+  head: () => ({ meta: [{ title: "Teacher dashboard — Riverside Academy" }, { name: "description", content: "Riverside Academy teacher timetable, classes and teaching priorities." }, { property: "og:title", content: "Teacher dashboard — Riverside Academy" }, { property: "og:description", content: "Teacher timetable, classes and teaching priorities." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: TeacherDashboard,
+});
 
 const SUBJ_TONE: Record<string, string> = {
   Mathematics: "bg-chart-4 text-primary-foreground", Physics: "bg-chart-5 text-primary-foreground", "Computer Studies": "bg-chart-2 text-primary-foreground",

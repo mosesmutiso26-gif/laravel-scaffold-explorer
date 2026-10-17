@@ -13,7 +13,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 type Page = { data: Record<string, string | number | boolean>[]; meta: { current_page: number; last_page: number; total: number } };
 
-export const Route = createFileRoute("/portal/section/$key")({ component: SectionPage });
+export const Route = createFileRoute("/portal/section/$key")({
+  head: ({ params }) => {
+    const title = `${SECTIONS[params.key]?.title ?? "Records"} — Riverside Academy`;
+    const description = `Riverside Academy ${SECTIONS[params.key]?.title ?? "school"} records.`;
+    return { meta: [{ title }, { name: "description", content: description }, { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] };
+  },
+  component: SectionPage,
+});
 
 function SectionPage() {
   const { key } = Route.useParams();
@@ -24,7 +31,7 @@ function SectionPage() {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<{ k: string; d: "asc" | "desc" } | null>(null);
   const qs = new URLSearchParams({ page: String(page), per_page: "10", ...(search ? { search } : {}), ...(sort ? { sort: sort.k, direction: sort.d } : {}) });
-  const q = useQuery({ queryKey: [key, page, search, sort], queryFn: () => api.get<Page>(`${sec!.endpoint}?${qs}`), enabled: allowed, placeholderData: keepPreviousData });
+  const q = useQuery({ queryKey: [key, page, search, sort], queryFn: () => { if (!sec) throw new ApiError(404, "Unknown section."); return api.get<Page>(`${sec.endpoint}?${qs}`); }, enabled: allowed, placeholderData: keepPreviousData });
   const qc = useQueryClient();
   const markRead = useMutation({ mutationFn: (id: number) => api.patch(`/notifications/${id}/read`), onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }) });
 
@@ -60,7 +67,7 @@ function SectionPage() {
                 <TableRow>
                   {sec.columns.map((c) => (
                     <TableHead key={c.key}>
-                      <button className="inline-flex items-center gap-1" onClick={() => setSort({ k: c.key, d: sort?.k === c.key && sort.d === "asc" ? "desc" : "asc" })}>{c.label}<ArrowUpDown className="h-3 w-3" /></button>
+                      <Button variant="ghost" size="sm" className="px-0" onClick={() => setSort({ k: c.key, d: sort?.k === c.key && sort.d === "asc" ? "desc" : "asc" })}>{c.label}<ArrowUpDown className="h-3 w-3" /></Button>
                     </TableHead>
                   ))}
                   {key === "notifications" && <TableHead />}
