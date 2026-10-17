@@ -5,6 +5,7 @@
  * fallback for live mode.
  */
 import { ApiError } from "./errors";
+import { getOriginalWorkspace } from "./original-workspace";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = any;
@@ -180,6 +181,10 @@ export async function demoRequest<T>(method: string, fullPath: string, body?: un
   const d = db();
   let m: RegExpMatchArray | null;
   const b: Row = body ?? {};
+
+  if (method === "GET" && (m = path.match(/^\/workspaces\/([\w-]+)\/([\w-]+)$/))) {
+    return getOriginalWorkspace(m[1] ?? "", m[2] ?? "") as T;
+  }
 
   if (method === "GET" && (m = path.match(/^\/dashboards\/([\w-]+)$/))) return dashboard(m[1] ?? "") as T;
   if (method === "GET" && path === "/teacher/overview") return teacherOverview() as T;
