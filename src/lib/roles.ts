@@ -85,6 +85,8 @@ export const ROLES: RoleConfig[] = [
   r("transport", "Transport", ["transport", "students"]),
   r("procurement", "Procurement & Stores", ["purchase-orders", "inventory"]),
   r("sports", "Sports & Co-curricular", ["teams", "clubs"]),
+  r("cocurricular", "Co-Curricular", ["clubs"]),
+  r("timetable", "Timetable Centre", ["attendance", "assessments"]),
   r("prefect", "Prefect", ["clubs", "attendance"]),
 ];
 

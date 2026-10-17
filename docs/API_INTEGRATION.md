@@ -24,3 +24,8 @@ List endpoints are expected to accept `search, sort, direction, page, per_page` 
 | auth/login response must include `user.roles` | src/routes/login.tsx |
 
 Permissions are checked in the UI for navigation only; Laravel must enforce every rule server-side.
+
+## Restored original sidebar pages
+All 17 original specialist portal menus are retained in `src/lib/workspace-pages.ts`, including the previously omitted Timetable and Co-Curricular portals. The administrator can enter each portal and its full menu; other roles keep their own workspace. Existing teacher lists and HR leave/payroll workflows remain available.
+
+New read-only original-record views call `GET /workspaces/{role}/{page}` through the shared client. This aggregate contract is **not implemented in the Laravel package**. Demo mode supplies extracted original synthetic records; live mode shows the API error and never substitutes demo records. Laravel must scope the caller and map each page to its owning module. These restored views offer search and CSV export, not the original mutation workflows. Original placeholder pages remain explicitly labelled rather than claiming completion.

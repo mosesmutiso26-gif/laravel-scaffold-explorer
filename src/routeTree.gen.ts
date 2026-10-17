@@ -22,6 +22,7 @@ import { Route as PortalRoleRouteImport } from './routes/portal.$role'
 import { Route as PortalHrRouteImport } from './routes/portal.hr'
 import { Route as PortalTeacherRouteImport } from './routes/portal.teacher'
 import { Route as PortalSectionKeyRouteImport } from './routes/portal.section.$key'
+import { Route as PortalWorkspaceRolePageRouteImport } from './routes/portal.workspace.$role.$page'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +89,11 @@ const PortalSectionKeyRoute = PortalSectionKeyRouteImport.update({
   path: '/section/$key',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalWorkspaceRolePageRoute = PortalWorkspaceRolePageRouteImport.update({
+  id: '/workspace/$role/$page',
+  path: '/workspace/$role/$page',
+  getParentRoute: () => PortalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/portal/teacher': typeof PortalTeacherRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/section/$key': typeof PortalSectionKeyRoute
+  '/portal/workspace/$role/$page': typeof PortalWorkspaceRolePageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/portal/teacher': typeof PortalTeacherRoute
   '/portal': typeof PortalIndexRoute
   '/portal/section/$key': typeof PortalSectionKeyRoute
+  '/portal/workspace/$role/$page': typeof PortalWorkspaceRolePageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/portal/teacher': typeof PortalTeacherRoute
   '/portal/': typeof PortalIndexRoute
   '/portal/section/$key': typeof PortalSectionKeyRoute
+  '/portal/workspace/$role/$page': typeof PortalWorkspaceRolePageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/portal/teacher'
     | '/portal/'
     | '/portal/section/$key'
+    | '/portal/workspace/$role/$page'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/portal/teacher'
     | '/portal'
     | '/portal/section/$key'
+    | '/portal/workspace/$role/$page'
   id:
     | '__root__'
     | '/'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/portal/teacher'
     | '/portal/'
     | '/portal/section/$key'
+    | '/portal/workspace/$role/$page'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -285,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalSectionKeyRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/workspace/$role/$page': {
+      id: '/portal/workspace/$role/$page'
+      path: '/workspace/$role/$page'
+      fullPath: '/portal/workspace/$role/$page'
+      preLoaderRoute: typeof PortalWorkspaceRolePageRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
 
@@ -294,6 +313,7 @@ interface PortalRouteChildren {
   PortalTeacherRoute: typeof PortalTeacherRoute
   PortalIndexRoute: typeof PortalIndexRoute
   PortalSectionKeyRoute: typeof PortalSectionKeyRoute
+  PortalWorkspaceRolePageRoute: typeof PortalWorkspaceRolePageRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
@@ -302,6 +322,7 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalTeacherRoute: PortalTeacherRoute,
   PortalIndexRoute: PortalIndexRoute,
   PortalSectionKeyRoute: PortalSectionKeyRoute,
+  PortalWorkspaceRolePageRoute: PortalWorkspaceRolePageRoute,
 }
 
 const PortalRouteWithChildren =
